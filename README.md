@@ -70,11 +70,11 @@ pip install "jax[tpu]" -f https://storage.googleapis.com/jax-releases/libtpu_rel
 
 ```bash
 # Clone the repository (if applicable)
-git clone <repository-url>
-cd <repository-directory>
+git clone https://github.com/Prakharprasun/jax-flax-vit-pipeline.git
+cd jax-flax-vit-pipeline
 
 # Run the training script
-python vit_finetune_food101.py
+python ViT.py
 ```
 
 ## 📊 Configuration
