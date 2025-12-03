@@ -387,7 +387,7 @@ Feel free to submit issues and enhancement requests! When reporting issues, plea
 
 ## 📄 License
 
-This project is provided for educational purposes. Please check individual library licenses (JAX, Flax, Hugging Face) for commercial use.
+This project is provided for educational purposes and uses the MIT License. Please check individual library licenses (JAX, Flax, Hugging Face) for commercial use.
 
 ---
 
