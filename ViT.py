@@ -28,7 +28,7 @@ Performance Metrics (TPU v5 lite, 20-class Food-101 subset):
 """
 
 # --------------------------
-# 1️⃣ IMPORTS & ENVIRONMENT SETUP
+# IMPORTS & ENVIRONMENT SETUP
 # --------------------------
 import numpy as np
 import jax
@@ -44,7 +44,7 @@ from functools import partial
 from typing import Dict, Tuple, List, Any, Optional, Iterator
 
 # Environment validation and hardware detection
-print("🚀 JAX + Flax ViT Fine-tuning Tutorial (Production-Ready)")
+print("JAX + Flax ViT Fine-tuning Tutorial (Production-Ready)")
 print("=" * 60)
 print(f"JAX version: {jax.__version__}")
 print(f"Available accelerator devices: {jax.device_count()}")
@@ -53,7 +53,7 @@ print("=" * 60)
 
 
 # --------------------------
-# 2️⃣ TRAINING CONFIGURATION MANAGEMENT
+# TRAINING CONFIGURATION MANAGEMENT
 # --------------------------
 class TrainingConfig:
     """
@@ -106,7 +106,7 @@ TOTAL_DECAY_STEPS = config.NUM_EPOCHS * STEPS_PER_EPOCH
 
 
 # --------------------------
-# 3️⃣ DATA PIPELINE & PREPROCESSING
+# DATA PIPELINE & PREPROCESSING
 # --------------------------
 def load_food101_subset(num_classes: int = config.NUM_CLASSES) -> Tuple[Any, Any, List[str]]:
     """
@@ -130,7 +130,7 @@ def load_food101_subset(num_classes: int = config.NUM_CLASSES) -> Tuple[Any, Any
     Raises:
         RuntimeError: If dataset download or loading fails
     """
-    print("📊 Initializing Food-101 dataset pipeline...")
+    print("Initializing Food-101 dataset pipeline...")
     
     try:
         # Load dataset with streaming for memory efficiency
@@ -148,7 +148,7 @@ def load_food101_subset(num_classes: int = config.NUM_CLASSES) -> Tuple[Any, Any
     train_subset = train_ds.filter(lambda x: x["label"] in subset_labels)
     val_subset = val_ds.filter(lambda x: x["label"] in subset_labels)
 
-    print(f"✅ Food-101 subset loaded successfully")
+    print(f"Food-101 subset loaded successfully")
     print(f"   • Training samples: {len(train_subset):,}")
     print(f"   • Validation samples: {len(val_subset):,}")
     print(f"   • Target classes: {num_classes}")
@@ -173,7 +173,7 @@ def create_feature_extractor() -> ViTImageProcessor:
     """
     try:
         feature_extractor = ViTImageProcessor.from_pretrained(config.MODEL_NAME)
-        print(f"✅ Feature extractor loaded: {config.MODEL_NAME}")
+        print(f"Feature extractor loaded: {config.MODEL_NAME}")
         return feature_extractor
     except Exception as e:
         raise RuntimeError(f"Feature extractor initialization failed: {e}")
@@ -355,7 +355,7 @@ def create_data_loader(dataset: Any,
 
 
 # --------------------------
-# 4️⃣ MODEL INITIALIZATION & TRAINING STATE
+# MODEL INITIALIZATION & TRAINING STATE
 # --------------------------
 def initialize_model(num_classes: int = config.NUM_CLASSES) -> FlaxViTForImageClassification:
     """
@@ -380,7 +380,7 @@ def initialize_model(num_classes: int = config.NUM_CLASSES) -> FlaxViTForImageCl
             num_labels=num_classes,
             ignore_mismatched_sizes=True  # Essential for fine-tuning
         )
-        print(f"✅ Vision Transformer initialized successfully")
+        print(f"Vision Transformer initialized successfully")
         print(f"   • Model: {config.MODEL_NAME}")
         print(f"   • Output classes: {num_classes}")
         return model
@@ -445,7 +445,7 @@ def create_optimizer(learning_rate: float = config.LEARNING_RATE,
 
 
 # --------------------------
-# 5️⃣ LOSS COMPUTATION & METRICS
+# LOSS COMPUTATION & METRICS
 # --------------------------
 def compute_loss_and_logits(params: Dict[str, Any],
                            model_apply_fn: Any,
@@ -604,7 +604,7 @@ def create_eval_step(model_apply_fn: Any):
 
 
 # --------------------------
-# 7️⃣ TRAINING LOOP WITH PERFORMANCE OPTIMIZATION
+# TRAINING LOOP WITH PERFORMANCE OPTIMIZATION
 # --------------------------
 def train_model(state: TrainState,
                 train_dataset: Any,
@@ -635,7 +635,7 @@ def train_model(state: TrainState,
     train_step = create_train_step(state.apply_fn)
     eval_step = create_eval_step(state.apply_fn)
     compile_time = time.time() - start_compile
-    print(f"✅ XLA compilation complete in {compile_time:.2f}s")
+    print(f"XLA compilation complete in {compile_time:.2f}s")
     
     # Initialize training history tracker
     history = {
@@ -710,26 +710,26 @@ def train_model(state: TrainState,
         if val_acc > best_val_acc:
             best_val_acc = val_acc
             best_state = state
-            print("   🏆 New best model checkpoint saved!")
+            print("New best model checkpoint saved!")
             
         epoch_time = time.time() - epoch_start
         history['epoch_times'].append(epoch_time)
         
         # Epoch summary with actionable insights
         overfit_gap = train_acc - val_acc
-        print(f"✅ Train Loss: {train_loss:.4f} | Train Acc: {train_acc:.4f}")
-        print(f"✅ Val Loss:   {val_loss:.4f} | Val Acc:   {val_acc:.4f}")
-        print(f"⏱️  Epoch time: {epoch_time:.2f}s | Overfit gap: {overfit_gap:.4f}")
+        print(f"Train Loss: {train_loss:.4f} | Train Acc: {train_acc:.4f}")
+        print(f"Val Loss:   {val_loss:.4f} | Val Acc:   {val_acc:.4f}")
+        print(f"Epoch time: {epoch_time:.2f}s | Overfit gap: {overfit_gap:.4f}")
         
         # Overfitting warning (guidance for early stopping)
         if overfit_gap > 0.10:
-            print("⚠️  Significant overfitting detected - consider regularization")
+            print("Significant overfitting detected - consider regularization")
             
-    print(f"\n🎯 Best validation accuracy achieved: {best_val_acc:.4f}")
+    print(f"\n Best validation accuracy achieved: {best_val_acc:.4f}")
     return best_state, history
 
 # --------------------------
-# 8️⃣ VISUALIZATION & DIAGNOSTICS
+# VISUALIZATION & DIAGNOSTICS
 # --------------------------
 def visualize_batch(batch: Dict[str, np.ndarray], 
                    class_names: List[str], 
@@ -745,7 +745,7 @@ def visualize_batch(batch: Dict[str, np.ndarray],
         class_names: List of human-readable class names
         num_samples: Number of samples to display
     """
-    print(f"🖼  Visualizing {num_samples} training samples...")
+    print(f"Visualizing {num_samples} training samples...")
     images = batch["image"][:num_samples]
     labels = batch["label"][:num_samples]
     
@@ -782,7 +782,7 @@ def visualize_predictions(batch: Dict[str, np.ndarray],
         class_names: Human-readable class names
         num_samples: Number of samples to display
     """
-    print("🔮 Visualizing model predictions...")
+    print("Visualizing model predictions...")
     images = batch["image"][:num_samples]
     true_labels = batch["label"][:num_samples]
     pred_labels = predictions[:num_samples]
@@ -859,7 +859,7 @@ def plot_training_history(history: Dict[str, List[float]]) -> None:
 
 
 # --------------------------
-# 9️⃣ MAIN EXECUTION PIPELINE
+# MAIN EXECUTION PIPELINE
 # --------------------------
 def main() -> Tuple[TrainState, Dict[str, List[float]]]:
     """
@@ -875,7 +875,7 @@ def main() -> Tuple[TrainState, Dict[str, List[float]]]:
     Returns:
         Trained model state and complete training history
     """
-    print("🎯 Starting Production ViT Fine-tuning Pipeline")
+    print("Starting Production ViT Fine-tuning Pipeline")
     print("=" * 60)
     
     # Initialize reproducible random number generation
@@ -883,16 +883,16 @@ def main() -> Tuple[TrainState, Dict[str, List[float]]]:
     main_rng, data_rng, model_rng = jax.random.split(main_rng, 3)
     
     # === PHASE 1: DATA PREPARATION ===
-    print("\n1️⃣ LOADING AND PREPROCESSING DATA")
+    print("\n LOADING AND PREPROCESSING DATA")
     train_dataset, val_dataset, class_names = load_food101_subset()
     feature_extractor = create_feature_extractor()
     
     # === PHASE 2: MODEL INITIALIZATION ===
-    print("\n2️⃣ INITIALIZING VISION TRANSFORMER")
+    print("\n INITIALIZING VISION TRANSFORMER")
     model = initialize_model()
     
     # === PHASE 3: TRAINING CONFIGURATION ===
-    print("\n3️⃣ CONFIGURING TRAINING INFRASTRUCTURE")
+    print("\n CONFIGURING TRAINING INFRASTRUCTURE")
     optimizer = create_optimizer()
     state = TrainState.create(
         apply_fn=model.module.apply,
@@ -901,7 +901,7 @@ def main() -> Tuple[TrainState, Dict[str, List[float]]]:
         rng=model_rng
     )
     
-    print("🔄 Training Configuration Summary:")
+    print("Training Configuration Summary:")
     print(f"   • Learning rate: {config.LEARNING_RATE} (warmup + cosine decay)")
     print(f"   • Weight decay: {config.WEIGHT_DECAY}")
     print(f"   • Training epochs: {config.NUM_EPOCHS}")
@@ -909,7 +909,7 @@ def main() -> Tuple[TrainState, Dict[str, List[float]]]:
     print(f"   • Batch size: {config.BATCH_SIZE_TRAIN} (train) / {config.BATCH_SIZE_VAL} (val)")
     
     # === PHASE 4: DATA VALIDATION ===
-    print("\n4️⃣ VALIDATING DATA PIPELINE")
+    print("\n VALIDATING DATA PIPELINE")
     sample_loader = create_data_loader(
         train_dataset, config.NUM_VISUALIZATION_SAMPLES, 
         feature_extractor, shuffle=True, rng_key=data_rng
@@ -918,7 +918,7 @@ def main() -> Tuple[TrainState, Dict[str, List[float]]]:
     visualize_batch(sample_batch, class_names)
     
     # === PHASE 5: MODEL TRAINING ===
-    print("\n5️⃣ TRAINING VISION TRANSFORMER")
+    print("\n TRAINING VISION TRANSFORMER")
     print("=" * 40)
     trained_state, history = train_model(
         state=state,
@@ -928,14 +928,14 @@ def main() -> Tuple[TrainState, Dict[str, List[float]]]:
     )
     
     # === PHASE 6: EVALUATION & VISUALIZATION ===
-    print("\n6️⃣ MODEL EVALUATION & VISUALIZATION")
+    print("\n MODEL EVALUATION & VISUALIZATION")
     print("=" * 40)
     
     # Generate training curves
     plot_training_history(history)
     
     # Qualitative evaluation on validation samples
-    print("\n🧪 Running qualitative evaluation...")
+    print("\n Running qualitative evaluation...")
     val_loader = create_data_loader(
         val_dataset, config.NUM_VISUALIZATION_SAMPLES, 
         feature_extractor, shuffle=False
@@ -962,14 +962,14 @@ def main() -> Tuple[TrainState, Dict[str, List[float]]]:
     avg_epoch_time = np.mean(history['epoch_times'])
     
     print("\n" + "=" * 60)
-    print("🎉 TRAINING COMPLETE - PERFORMANCE SUMMARY")
+    print(" TRAINING COMPLETE - PERFORMANCE SUMMARY")
     print("=" * 60)
-    print(f"📊 Final Training Accuracy:    {final_train_acc:.4f}")
-    print(f"📊 Final Validation Accuracy:  {final_val_acc:.4f}")
-    print(f"📈 Improvement from Epoch 1:   {improvement:.4f}")
-    print(f"🔍 Overfitting Gap:            {overfit_gap:.4f}")
-    print(f"⏱️  Average Epoch Time:        {avg_epoch_time:.2f}s")
-    print(f"🏆 Best Validation Accuracy:   {max(history['val_acc']):.4f}")
+    print(f" Final Training Accuracy:    {final_train_acc:.4f}")
+    print(f" Final Validation Accuracy:  {final_val_acc:.4f}")
+    print(f" Improvement from Epoch 1:   {improvement:.4f}")
+    print(f" Overfitting Gap:            {overfit_gap:.4f}")
+    print(f"  Average Epoch Time:        {avg_epoch_time:.2f}s")
+    print(f" Best Validation Accuracy:   {max(history['val_acc']):.4f}")
     print("=" * 60)
     
     return trained_state, history
