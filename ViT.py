@@ -511,7 +511,7 @@ def compute_accuracy(logits: jnp.ndarray, labels: jnp.ndarray) -> jnp.ndarray:
 
 
 # --------------------------
-# 6️⃣ JIT-COMPILED TRAINING & EVALUATION STEPS
+# JIT-COMPILED TRAINING & EVALUATION STEPS
 # --------------------------
 def create_train_step(model_apply_fn: Any):
     """
