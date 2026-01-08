@@ -1,25 +1,9 @@
 #!/usr/bin/env python3
 # ==================================================
 # JAX + Flax Tutorial: Fine-tune Vision Transformer on Food 101
-# Production-Ready Workflow with Optimized TPU/GPU Performance
 # ==================================================
 
 """
-Production-grade Vision Transformer fine-tuning pipeline using JAX, Flax, and Hugging Face.
-
-This implementation demonstrates industry-standard practices for:
-- Efficient fine-tuning of pre-trained Vision Transformers
-- Robust data preprocessing with edge case handling
-- JIT-compiled data augmentation for maximum accelerator utilization
-- Proper functional programming patterns for JAX compatibility
-- Comprehensive training monitoring and model evaluation
-
-Key Technical Features:
-• Resolved critical Flax Module.apply() positional argument errors
-• JIT-compiled augmentation pipeline for TPU/GPU acceleration
-• Optimized host-device synchronization for training performance
-• Production-ready logging, visualization, and model checkpointing
-
 Performance Metrics (TPU v5 lite, 20-class Food-101 subset):
 • Final Validation Accuracy: 92.79%
 • Training Time: ~17 minutes for 10 epochs
